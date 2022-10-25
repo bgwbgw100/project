@@ -1,0 +1,9 @@
+#resolution{
+    width: 1280px;
+    height: 1024px;
+    margin: auto;
+    border: solid 1px black;
+}
+#body{
+    margin: auto;
+}

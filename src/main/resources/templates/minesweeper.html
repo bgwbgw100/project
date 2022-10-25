@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #game_div{
+        border: 1px solid black;
+    }
+    
+    
+</style>
+<body>
+    <input type="text" id="width" placeholder="8 ~ 20">
+    <input type="text" id="height" placeholder="8 ~ 20 ">
+    <button onclick="game_start()">게임시작</button>
+    <div id ="game_div">
+        
+
+    </div>
+
+
+<!--지뢰찾기-->
+<script>
+function game_start(){
+
+    /** 가로 크기 */
+    let width = parseInt(document.querySelector("#width").value);
+    /** 세로 크기 */
+    let height = parseInt(document.querySelector("#height").value);
+    /** 지뢰개수 */
+    let mine_count = width*height/5;
+    
+    /** 게임판 배열 선언 */
+    let game_size = new Array(height);
+    for(let i =0 ; i < game_size.length; i++){
+        game_size[i] = new Array(width);
+    }
+    size_arr_init(mine_count,game_size,width,height);
+    mine_install(game_size,width,height,mine_count);
+    game_div_size(width,height);
+    game_imgtag_make(width,height);
+    img_event(game_size);
+    
+}
+/** 게임 배열 초기화 
+ *  아직 지뢰 배정xx
+*/
+function size_arr_init(mine_count,game_size,width,height){
+    let count = 0;
+    for(let i = 0 ; i < height; i++){
+        for(let j = 0 ; j < width; j++){         
+            game_size[i][j] =0;
+        }
+    }
+}
+/**
+ * 마인설치 1이 지뢰가 있는곳
+ */
+function mine_install(game_size,width,height,mine_count){
+    let count = 0;
+    while(count<mine_count){
+        let width_random=Math.floor(Math.random()*width);
+        let height_random=Math.floor(Math.random()*height);
+        if(game_size[width_random][height_random]==0){
+            game_size[width_random][height_random]=1;
+            count++;
+        }
+    }
+    console.log(game_size)
+}
+
+/**
+ * div 크기 조정
+ */ 
+function game_div_size(width,height){
+    let div_width = width*30;
+    let div_height= height*30;
+    let game_div = document.querySelector("#game_div");
+    game_div.style.width=div_width+"px";
+}
+
+/**
+ * 이미지태그 생성
+ */
+function game_imgtag_make(width,height){
+    for(let i  = 0 ; i < width; i++){
+        for(let j = 0 ; j <height; j++){
+            let img = document.createElement("img");
+            img.dataset.arr=i+","+j;
+            img.setAttribute("src","minesweeper_img/default.png");
+            img.setAttribute("id",i+","+j);
+            document.querySelector("#game_div").appendChild(img);
+        }
+    }
+}
+/**
+ * 이미지 이벤트 생성
+ */ 
+function img_event(game_size){
+    let imgs= document.querySelectorAll('img');
+    
+    for(let img of imgs){
+        img.addEventListener("click",function(){
+            let event_target=event.target;
+            let arr=event_target.dataset.arr.split(",");
+            let arry = Number(arr[0]);
+            let arrx = Number(arr[1]);
+            if(game_size[arr[0]][arr[1]]==0){
+                //지뢰가 아님 이미지 체인지
+                success(game_size,arrx,arry);
+            }
+            else if(game_size[arr[0]][arr[1]]==1){
+                //지뢰임 게임오버 지뢰이미지 출력후 게임오버
+            }
+            
+        })
+    }
+}
+
+/**
+ * 지뢰가 아닌곳 클릭시
+ */
+function success(game_size,arrx,arry){
+    let img = document.getElementById(""+arry+","+arrx);
+    if(img.getAttribute("src")!="minesweeper_img/default.png"){
+        return;
+    }
+    
+    let cnt = 0;
+    
+    if(arry==0&&arrx==0){
+        cnt=right(game_size,cnt,arrx,arry);
+        cnt=right_down(game_size,cnt,arrx,arry);
+        cnt=down(game_size,cnt,arrx,arry);
+    }
+    else if(arry==0&&arrx==7){
+        cnt=left(game_size,cnt,arrx,arry);
+        cnt=left_down(game_size,cnt,arrx,arry);
+        cnt=down(game_size,cnt,arrx,arry);
+    }
+    else if(arry==7&&arrx==0){
+        cnt=right(game_size,cnt,arrx,arry);
+        cnt=right_up(game_size,cnt,arrx,arry);
+        cnt=up(game_size,cnt,arrx,arry);
+    }
+    else if(arry==7&&arrx==7){
+        cnt=left(game_size,cnt,arrx,arry);
+        cnt=left_up(game_size,cnt,arrx,arry);
+        cnt=up(game_size,cnt,arrx,arry);
+    }
+    else if(arry==0){
+        cnt=left(game_size,cnt,arrx,arry);
+        cnt=left_down(game_size,cnt,arrx,arry);
+        cnt=down(game_size,cnt,arrx,arry);
+        cnt=right_down(game_size,cnt,arrx,arry);
+        cnt=right(game_size,cnt,arrx,arry);
+    }
+    else if(arry==7){
+        cnt=up(game_size,cnt,arrx,arry);
+        cnt=left_up(game_size,cnt,arrx,arry)
+        cnt=left(game_size,cnt,arrx,arry);
+        cnt=right(game_size,cnt,arrx,arry);
+        cnt=right_up(game_size,cnt,arrx,arry);
+    }
+    else if(arrx==7){
+        cnt=left(game_size,cnt,arrx,arry);
+        cnt=left_up(game_size,cnt,arrx,arry);
+        cnt=up(game_size,cnt,arrx,arry);
+        cnt=left_down(game_size,cnt,arrx,arry);
+        cnt=down(game_size,cnt,arrx,arry);
+    }
+    else if(arrx==0){
+        cnt=right(game_size,cnt,arrx,arry);
+        cnt=right_up(game_size,cnt,arrx,arry);
+        cnt=up(game_size,cnt,arrx,arry);
+        cnt=right_down(game_size,cnt,arrx,arry);
+        cnt=down(game_size,cnt,arrx,arry);
+    }else {
+        cnt=up(game_size,cnt,arrx,arry);
+        cnt=right_up(game_size,cnt,arrx,arry);
+        cnt=right(game_size,cnt,arrx,arry);
+        cnt=right_down(game_size,cnt,arrx,arry);
+        cnt=down(game_size,cnt,arrx,arry);
+        cnt=left_down(game_size,cnt,arrx,arry);
+        cnt=left(game_size,cnt,arrx,arry);
+        cnt=left_up(game_size,cnt,arrx,arry);
+    }
+    console.log(cnt)
+    
+    console.log(img)
+    img.setAttribute("src","minesweeper_img/"+cnt+".png");
+    if(cnt == 0){
+        if(arrx==0&&arry==0){
+            success(game_size,arrx+1,arry+1);
+            success(game_size,arrx+1,arry);
+            success(game_size,arrx,arry+1);
+        }
+        else if(arrx==0&&arry==7){
+            success(game_size,arrx+1,arry);
+            success(game_size,arrx,arry-1);
+            success(game_size,arrx+1,arry-1);
+        }
+        else if(arrx==7&&arry==0){
+            success(game_size,arrx-1,arry);
+            success(game_size,arrx-1,arry+1);
+            success(game_size,arrx,arry+1);
+        }
+        else if(arrx==7&&arry==7){
+            success(game_size,arrx-1,arry-1);
+            success(game_size,arrx-1,arry);
+            success(game_size,arrx,arry-1);
+        }
+        else if(arry==0){
+            success(game_size,arrx-1,arry);
+            success(game_size,arrx+1,arry);
+            success(game_size,arrx-1,arry+1);
+            success(game_size,arrx,arry+1);
+            success(game_size,arrx+1,arry+1);
+        }
+        else if(arry==7){
+            success(game_size,arrx-1,arry-1);
+            success(game_size,arrx,arry-1);
+            success(game_size,arrx+1,arry-1);
+            success(game_size,arrx-1,arry);
+            success(game_size,arrx+1,arry);
+        }
+        else if(arrx==7){
+            success(game_size,arrx-1,arry-1);
+            success(game_size,arrx-1,arry);
+            success(game_size,arrx-1,arry+1);
+            success(game_size,arrx,arry-1);
+            success(game_size,arrx,arry+1);
+        }
+        else if(arrx==0){
+            success(game_size,arrx+1,arry-1);
+            success(game_size,arrx+1,arry);
+            success(game_size,arrx+1,arry+1);
+            success(game_size,arrx,arry-1);
+            success(game_size,arrx,arry+1);
+        }else {
+            success(game_size,arrx+1,arry-1);
+            success(game_size,arrx+1,arry);
+            success(game_size,arrx+1,arry+1);
+            success(game_size,arrx,arry-1);
+            success(game_size,arrx,arry+1);
+            success(game_size,arrx-1,arry-1);
+            success(game_size,arrx-1,arry);
+            success(game_size,arrx-1,arry+1);
+        }
+        
+    }
+}
+
+function up(game_size,cnt,arrx,arry){
+    if(game_size[arry-1][arrx]==1) {
+        cnt+=1;
+    }
+    return cnt;
+}
+function right_up(game_size,cnt,arrx,arry){
+    
+    if(game_size[arry-1][arrx+1]==1) {
+        cnt+=1;
+    }
+    return cnt;
+}
+function right(game_size,cnt,arrx,arry){
+
+    if(game_size[arry][arrx+1]==1) {
+        cnt+=1;
+    }
+    return cnt;
+    
+}
+function right_down(game_size,cnt,arrx,arry){
+    if(game_size[arry+1][arrx+1]==1){
+        cnt+=1;
+    }
+    return cnt;
+}
+function down(game_size,cnt,arrx,arry){
+    if(game_size[arry+1][arrx]==1) {
+        cnt+=1;
+    }
+    return cnt;
+}
+function left_down(game_size,cnt,arrx,arry){
+    if(game_size[arry+1][arrx-1]==1) {
+        cnt+=1;
+    }
+    return cnt;
+}
+function left(game_size,cnt,arrx,arry){
+    if(game_size[arry][arrx-1]==1) {
+        cnt+=1;
+    }
+    return cnt;
+}
+
+function left_up(game_size,cnt,arrx,arry){
+    if(game_size[arry-1][arrx-1]==1) {
+        cnt+=1;
+    }
+    return cnt;
+}
+</script>
+
+</body>
+</html>
