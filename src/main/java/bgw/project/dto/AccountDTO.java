@@ -12,7 +12,9 @@ public class AccountDTO {
     private String authority;
     private Date dltnDate;
     private Date joinDate;
+    private String useOx;
     private String emailAddress;
     private Date lastAccessDate;
+    private String password;
 
 }

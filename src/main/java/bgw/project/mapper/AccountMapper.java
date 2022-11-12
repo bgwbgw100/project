@@ -1,12 +1,14 @@
-package bgw.project.account;
+package bgw.project.mapper;
 
 import bgw.project.dto.AccountDTO;
+import bgw.project.form.AccountSaveForm;
+import bgw.project.form.LoginForm;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-public interface AccountMapperTest {
+public interface AccountMapper {
 
     @Select("select * from account")
     @Results({
@@ -29,9 +31,13 @@ public interface AccountMapperTest {
     })
     public AccountDTO findById(@Param("id") String id);
 
-    @Insert("insert into account (id,name,type,authority,email_address,password) " +
-            "values(#{id},#{name},#{type},#{authority},#{email_address},#{password})")
-    public void join(@Param("id") String id,@Param("password") String password,@Param("name") String name,@Param("type") String type,@Param("authority") String authority,@Param("email_address") String emailAddress);
+    @Select("select id,name,authority from account where id=#{id} and password=#{password}")
+    public AccountDTO login(LoginForm loginForm);
+
+
+    @Insert("insert into account (id,name,email_address,password) " +
+            "values(#{id},#{name},#{email_address},#{password})")
+    public void join(AccountSaveForm accountSaveForm);
 
     @Update("update account set use_OX ='X',dltn_date=sysdate() where id = #{id}")
     public void delete(@Param("id") String id);

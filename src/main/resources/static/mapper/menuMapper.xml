@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bgw.project.menu.MenuMapperTest">
+    <select id="selectAllMenu" resultType="MenuDTO">
+        select *
+          from menu
+         where use_ox = 'O'
+    </select>
+    <select id="selectAllMenuCnt" resultType="java.lang.Integer">
+        select count(*)
+          from menu
+    </select>
+
+    <select id="selectMenuByName" resultType="MenuDTO">
+        select *
+         from menu
+        where use_ox='O'
+          and name=#{name}
+
+    </select>
+
+    <insert id="insertMenu" >
+        insert into menu(name,sort,level,parent_name) values(#{name},#{sort},#{level},#{parent_name})
+    </insert>
+
+
+
+
+
+</mapper>

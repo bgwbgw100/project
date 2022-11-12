@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bgw.project.mapper.BoardMapper">
+
+
+
+    <select id="selectAllCntBoardByName" resultType="Integer">
+        select count(*)
+         from board
+         where name= #{name}
+           and use_ox = 'o'
+    </select>
+
+    <select id="selectAllBoardByPagingVO" resultType="BoardDTO" parameterType="bgw.project.vo.PagingVO">
+        SELECT   *
+          FROM (SELECT @ROWNUM:=@ROWNUM+1 as rn , A.*
+                  from (select   seq,
+                                writer,
+                                kind,
+                                notice_status,
+                                views,
+                                ip
+                           FROM board
+                          where NAME= #{name}
+                          and use_ox = 'o'
+                        order by seq)A
+            WHERE (SELECT @ROWNUM:=0)=0 )B
+        WHERE rn BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="selectBoardDetailBySeq"  resultType="BoardDTO">
+        select *
+         from board
+        where seq = #{seq}
+
+    </select>
+
+    <insert id="insertBoard" parameterType="BoardDTO"  useGeneratedKeys="true" keyProperty="seq">
+        insert into board(name,kind,title,writer,content,notice_status,ip)
+                     values(#{name},#{kind},#{title},#{writer},#{content},#{noticeStatus},#{ip})
+
+    </insert>
+
+    <update id="updateBoard" parameterType="BoardDTO">
+        update board set
+            kind = #{kind},
+            title = #{title},
+            content = #{content},
+            ip = #{ip}
+        where seq = #{seq}
+    </update>
+
+    <delete id="deleteBoard" parameterType="java.lang.Integer">
+        update board set
+            use_ox = 'X'
+          where seq = #{seq}
+    </delete>
+
+
+
+
+</mapper>

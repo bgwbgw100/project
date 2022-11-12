@@ -14,7 +14,7 @@ public class MenuDTO {
     private int level;
     private String parentName;
     private Date creationDate;
-    private String use;
+    private String useOx;
     private Date dltnDate;
 }
 
