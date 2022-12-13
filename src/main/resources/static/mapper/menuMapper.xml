@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="bgw.project.menu.MenuMapperTest">
+<mapper namespace="bgw.project.mapper.MenuMapper">
     <select id="selectAllMenu" resultType="MenuDTO">
         select *
           from menu
          where use_ox = 'O'
+          order by sort DESC
     </select>
+    <select id="selectAllMenuName">
+        select name
+          from menu
+        where use_ox = 'O';
+    </select>
+    <select id="selectSortByParentName" resultType="java.lang.Integer">>
+        select sort
+          from menu
+        where parent_name=#{parentName}
+        order by sort DESC
+    </select>
+
+
     <select id="selectAllMenuCnt" resultType="java.lang.Integer">
         select count(*)
           from menu
@@ -17,12 +31,24 @@
          from menu
         where use_ox='O'
           and name=#{name}
-
     </select>
+    <select id="selectMenuCountByName" resultType="java.lang.Integer">
+        select count(*)
+        from menu
+        where use_ox='O'
+        and name=#{name}
+    </select>
+
 
     <insert id="insertMenu" >
         insert into menu(name,sort,level,parent_name) values(#{name},#{sort},#{level},#{parent_name})
     </insert>
+
+    <select id="selectMenuSortMax" resultType="java.lang.Integer">
+        select MAX(sort)
+          from menu
+         where parent_name=#{parentName}
+    </select>
 
 
 

@@ -13,7 +13,7 @@ import java.io.IOException;
 @Slf4j
 public class LoginCheckFilter implements Filter{
 
-    private static final String[] blackList = {"*insert*","*update*","*delete*"};
+    private static final String[] blackList = {"*insert*","*update*","*delete*","upload"};
 
 
     @Override

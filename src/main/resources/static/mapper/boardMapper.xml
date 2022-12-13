@@ -20,7 +20,9 @@
                                 kind,
                                 notice_status,
                                 views,
-                                ip
+                                ip,
+                                title,
+                                rgstr_date
                            FROM board
                           where NAME= #{name}
                           and use_ox = 'o'

@@ -21,4 +21,5 @@ public class BoardDTO {
     private Date dltnDate;
     private String useOx;
     private String ip;
+
 }

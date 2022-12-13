@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bgw.project.mapper.AttachFileMapper">
+
+   <insert id="fileInsert" parameterType="AttachFileDTO" useGeneratedKeys="true" keyProperty="no">
+       insert into attached_file (type_work,work_pk,writer,original_file_name,save_file_name,file_size,file_extention,ip,path)
+                values(#{typeWork},#{workPk},#{writer},#{originalFileName},#{saveFileName},#{fileSize},#{fileExtention},#{ip},#{path})
+   </insert>
+    <select id="fileSelect" resultType="AttachFileDTO">
+        select save_file_name,
+                original_file_name,
+                file_size,
+                file_extention,
+                path
+        from attached_file
+        where no = #{no}
+          and use_ox = 'O'
+    </select>
+    <delete id="residueDelete">
+        delete from attached_file
+          where no=#{no}
+    </delete>
+    <update id="fileUpdate" parameterType="AttachFileDTO">
+        update attached_file
+          set original_file_name=#{originalFileName},
+              save_file_name=#{saveFileName},
+              file_size=#{fileSize},
+              file_extention=#{fileExtention},
+              ip =#{ip},
+              modification_date=sysdate()
+        where no=#{no}
+    </update>
+    <update id="fileWorkTypeUpdate" parameterType="AttachFileDTO">
+        update attached_file
+           set type_work =#{typeWork},
+               work_pk =#{workPk}
+         where no=#{no}
+    </update>
+
+    <update id="fileDelete">
+        update attached_file
+           set use_ox = 'X'
+        where no=#{no}
+
+    </update>
+
+
+
+
+
+
+</mapper>

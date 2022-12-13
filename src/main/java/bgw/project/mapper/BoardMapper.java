@@ -16,5 +16,6 @@ public interface BoardMapper {
     public int insertBoard(BoardDTO boardDTO);
     public int updateBoard(BoardDTO boardDTO);
     public int deleteBoard(int seq);
+    public int fileWorkTypeUpdate(@Param("no") String no);
 
 }

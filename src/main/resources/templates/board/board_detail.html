@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layout :: layout(~{::title},~{::section},~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>게시글 작성</title>
+</head>
+<body>
+<section>
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 th:text="${board.name}"></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title" th:text="${board.title}"></h3>
+                            <div class="card-tools">
+                                <a href="#" class="btn btn-tool" title="Previous"><i
+                                        class="fas fa-chevron-left"></i></a>
+                                <a href="#" class="btn btn-tool" title="Next"><i class="fas fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0">
+                            <div class="mailbox-read-info">
+                                <h5 th:text="${board.writer}"></h5>
+                                <h6>
+                                    <span class="mailbox-read-time float-right">15 Feb. 2015 11:03 PM</span></h6>
+                            </div>
+                            <div class="mailbox-read-message"  th:utext="${board.content}">
+
+                            </div>
+
+                        </div>
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<script>
+</script>
+
+</body>
+</html>

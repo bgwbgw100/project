@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,11 +20,13 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">홈페이지 관리자 로그인</p>
+      <p class="login-box-msg"></p>
 
-      <form action="../../index3.html" method="post">
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="ID">
+      <form th:action="@{/login?path={path}(path=${path})}" method="post" >
+
+
+          <div class="input-group mb-3">
+          <input type="text" class="form-control" name="id" placeholder="ID">
           <div class="input-group-append">
             <div class="input-group-text">
               
@@ -32,7 +34,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" name="password" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
              
@@ -50,10 +52,11 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">로그인</button>
           </div>
           <!-- /.col -->
         </div>
+
       </form>
     </div>
     <!-- /.login-card-body -->
