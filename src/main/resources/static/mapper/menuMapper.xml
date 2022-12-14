@@ -39,8 +39,16 @@
         and name=#{name}
     </select>
 
+    <select id="selectMenuCountByNameParentName" parameterType="MenuDTO"   resultType="java.lang.Integer">
+        select count(*)
+        from menu
+        where use_ox='O'
+        and name=#{name}
+        and parentName=#{parentName}
+    </select>
 
-    <insert id="insertMenu" >
+
+    <insert id="insertMenu" parameterType="MenuDTO">
         insert into menu(name,sort,level,parent_name) values(#{name},#{sort},#{level},#{parent_name})
     </insert>
 

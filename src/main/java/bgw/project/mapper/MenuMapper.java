@@ -14,5 +14,5 @@ public interface MenuMapper {
     public List<Integer> selectSortByParentName(@Param("parentName")String parentName) throws Exception;
     public int selectMenuSortMax(@Param("parentName") String parentName) throws Exception;
     public int selectMenuCountByName(@Param("name") String Name) throws  Exception;
-
+    public int selectMenuCountByNameParentName(MenuDTO menuDTO) throws  Exception;
 }
