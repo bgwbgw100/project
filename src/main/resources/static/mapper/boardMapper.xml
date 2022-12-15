@@ -6,26 +6,28 @@
 
 
     <select id="selectAllCntBoardByName" resultType="Integer">
-        select count(*)
-         from board
-         where name= #{name}
-           and use_ox = 'o'
+        select count(A.seq)
+         from board A,menu B
+         where A.MENU_ID = B.MENU_ID
+           AND B.NAME = #{name}
+           and A.use_ox = 'o'
     </select>
 
     <select id="selectAllBoardByPagingVO" resultType="BoardDTO" parameterType="bgw.project.vo.PagingVO">
         SELECT   *
           FROM (SELECT @ROWNUM:=@ROWNUM+1 as rn , A.*
-                  from (select   seq,
-                                writer,
-                                kind,
-                                notice_status,
-                                views,
-                                ip,
-                                title,
-                                rgstr_date
-                           FROM board
-                          where NAME= #{name}
-                          and use_ox = 'o'
+                  from (select  C.seq,
+                                C.writer,
+                                C.kind,
+                                C.notice_status,
+                                C.views,
+                                C.ip,
+                                C.title,
+                                C.rgstr_date
+                           FROM board C,menu D
+                          where C.MENU_ID = D.MENU_ID
+                            AND D.NAME = #{name}
+                            and C.use_ox = 'o'
                         order by seq)A
             WHERE (SELECT @ROWNUM:=0)=0 )B
         WHERE rn BETWEEN #{start} AND #{end}

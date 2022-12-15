@@ -20,7 +20,8 @@ public class MenuApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        List<MenuDTO> menuDTOS = menuService.selectAllMenu();
-        application.setAttribute(Const.MENU_LIST,menuDTOS);
+      //  List<MenuDTO> menuDTOS = menuService.selectAllMenu();
+        List<MenuDTO> boardList = menuService.selectMenuBoard();
+        application.setAttribute(Const.BOARD_LIST,boardList);
     }
 }

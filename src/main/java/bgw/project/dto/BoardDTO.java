@@ -8,7 +8,7 @@ import java.util.Date;
 public class BoardDTO {
     private int seq;
     private int order;
-    private String name;
+    private String menuId;
     private String kind;
     private String title;
     private String writer;

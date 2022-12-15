@@ -74,6 +74,11 @@ public class MenuServiceImpl implements MenuService{
         return result;
     }
 
+    @Override
+    public List<MenuDTO> selectMenuBoard() throws Exception {
+        List<MenuDTO> boardList = menuMapper.selectMenuBoard();
+        return boardList;
+    }
 
 
 }

@@ -7,6 +7,7 @@ import bgw.project.dto.BoardDTO;
 import bgw.project.form.BoardInsertForm;
 import bgw.project.mapper.AttachFileMapper;
 import bgw.project.mapper.BoardMapper;
+import bgw.project.mapper.MenuMapper;
 import bgw.project.session.SessionConst;
 import bgw.project.vo.PagingVO;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class BoardServiceImpl implements BoardService {
 
         AccountDTO accountDTO = (AccountDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
 
-        boardDTO.setName(boardName);
+        boardDTO.setMenuId(menuId);
         boardDTO.setContent(boardInsertForm.getContent());
         boardDTO.setTitle(boardInsertForm.getTitle());
         boardDTO.setWriter(accountDTO.getName());

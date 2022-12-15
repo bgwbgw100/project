@@ -15,4 +15,6 @@ public interface MenuService {
     String insertBoardMenu(String boardName, HttpServletRequest request) throws Exception;
 
     Map<String, Object> insertBoardCheck(String boardName, Map<String, Object> result) throws Exception;
+
+    List<MenuDTO> selectMenuBoard() throws Exception;
 }

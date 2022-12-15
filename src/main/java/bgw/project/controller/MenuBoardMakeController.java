@@ -14,13 +14,13 @@ import java.util.Map;
 @RequestMapping("makeBoard")
 public class MenuBoardMakeController {
     private final MakeBoardService makeBoardService;
-    @GetMapping
+    @GetMapping("/")
     public String makeBoard(@RequestParam Map<String, Object> paramMap) throws Exception{
 
         return "makeBoard";
 
     }
-    @PostMapping
+    @PostMapping("insert")
     public String makeBoardInsert(@RequestBody Map<String, Object> paramMap, Model model) throws Exception{
         makeBoardService.makeBoardInsert(paramMap);
         if(null != paramMap.get("error")){
@@ -29,7 +29,7 @@ public class MenuBoardMakeController {
         return "makeBoard";
     }
 
-    @PostMapping
+    @PostMapping("delete")
     @ResponseBody
     public Map<String,Object> makeBoardDelete(@RequestBody Map<String, Object> paramMap, Model model) throws Exception{
         makeBoardService.makeBoardDelete(paramMap);
