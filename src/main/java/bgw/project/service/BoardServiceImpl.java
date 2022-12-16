@@ -24,6 +24,8 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
     private final AttachFileMapper attachFileMapper;
 
+    private final MenuMapper menuMapper;
+
 
     @Override
     public List<BoardDTO> boardList(String boardName, String page) {
@@ -54,6 +56,8 @@ public class BoardServiceImpl implements BoardService {
         HttpSession session = request.getSession(false);
 
         AccountDTO accountDTO = (AccountDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        int menuId = menuMapper.selectMenuIdByName(boardName);
+
 
         boardDTO.setMenuId(menuId);
         boardDTO.setContent(boardInsertForm.getContent());

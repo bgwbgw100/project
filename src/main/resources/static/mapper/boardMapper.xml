@@ -41,8 +41,8 @@
     </select>
 
     <insert id="insertBoard" parameterType="BoardDTO"  useGeneratedKeys="true" keyProperty="seq">
-        insert into board(name,kind,title,writer,content,notice_status,ip)
-                     values(#{name},#{kind},#{title},#{writer},#{content},#{noticeStatus},#{ip})
+        insert into board(menu_id,kind,title,writer,content,notice_status,ip)
+                     values(#{menuId},#{kind},#{title},#{writer},#{content},#{noticeStatus},#{ip})
 
     </insert>
 

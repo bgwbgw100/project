@@ -18,4 +18,5 @@ public interface BoardMapper {
     public int deleteBoard(int seq);
     public int fileWorkTypeUpdate(@Param("no") String no);
 
+
 }

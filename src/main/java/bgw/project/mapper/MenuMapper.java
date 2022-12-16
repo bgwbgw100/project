@@ -18,4 +18,7 @@ public interface MenuMapper {
     public int selectMenuCountByNameParentName(MenuDTO menuDTO) throws  Exception;
     @Select(" select * from menu where parent_name='board'")
     public List<MenuDTO> selectMenuBoard() throws Exception;
+
+    @Select(" select menu_id from menu where name=#{name}")
+    public int selectMenuIdByName(@Param("name") String name);
 }
