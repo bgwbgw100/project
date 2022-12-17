@@ -56,7 +56,7 @@ public class MenuServiceImpl implements MenuService{
 
         ServletContext application = request.getServletContext();
         application.setAttribute(Const.MENU_LIST,menuDTOS);
-        return null;
+        return "성공";
     }
 
     @Override
