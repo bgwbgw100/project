@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MenuMapper {
@@ -21,4 +22,8 @@ public interface MenuMapper {
 
     @Select(" select menu_id from menu where name=#{name}")
     public int selectMenuIdByName(@Param("name") String name);
+
+    public MenuDTO selectMenuBoardHaveBoardCheck(Map<String,Object> dataMap) throws  Exception;
+    public int deleteMenuByNameAndParentName(Map<String,Object> dataMap) throws Exception;
+
 }
