@@ -13,6 +13,12 @@
           from menu
         where use_ox = 'O';
     </select>
+    <select id="selectAllMenuBoard" resultType="MenuDTO">
+        select name
+          from menu
+         where parent_name = 'board'
+    </select>
+
     <select id="selectSortByParentName" resultType="java.lang.Integer">>
         select sort
           from menu
@@ -80,7 +86,6 @@
         update menu
            set use_ox='X'
          where menu_id=#{menuId}
-
     </update>
 
 

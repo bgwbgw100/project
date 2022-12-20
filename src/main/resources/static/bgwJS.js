@@ -42,8 +42,8 @@ bgw = {
         xhr.send(JSON.stringify(obj.data));
     }
     if(obj.dataType=="form"){
-            xhr.send(obj.data);
-        }
+        xhr.send(obj.data);
+    }
 
 
     }

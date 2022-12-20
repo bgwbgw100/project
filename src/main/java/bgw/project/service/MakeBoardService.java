@@ -1,6 +1,8 @@
 package bgw.project.service;
 
-import java.sql.SQLException;
+import bgw.project.dto.MenuDTO;
+
+import java.util.List;
 import java.util.Map;
 
 public interface MakeBoardService {
@@ -8,4 +10,5 @@ public interface MakeBoardService {
     public Map<String,Object> makeBoardInsert(Map<String,Object> dataMap)throws Exception;
     public Map<String,Object> makeBoardDelete(Map<String,Object> dataMap)throws Exception;
 
+    List<MenuDTO> menuBoardList()throws Exception;
 }

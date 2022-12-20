@@ -111,7 +111,10 @@ public class BoardServiceTest {
 
 
         total = boardMapperTest.selectAllCntBoardByName(name);
-        PagingVO pagingVO = new PagingVO(total,nowPage,perPage);
+        PagingVO pagingVO = new PagingVO();
+        pagingVO.total(total).nowPage(nowPage).perPage(perPage);
+        pagingVO.calcResult();
+
         pagingVO.setName(name);
     
         

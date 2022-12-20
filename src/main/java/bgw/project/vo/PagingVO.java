@@ -2,28 +2,47 @@ package bgw.project.vo;
 
 import lombok.Data;
 
+import java.awt.print.Pageable;
+
 @Data
 public class PagingVO {
     // 현재페이지, 시작페이지, 끝페이지, 게시글 총 갯수, 페이지당 글 갯수, 마지막페이지, SQL쿼리에 쓸 start, end
-    private int nowPage;
+    private int nowPage=1;
     private int startPage;
     private int endPage;
-    private int total;
-    private int perPage;
+    private int total=10;
+    private int perPage=10;
     private int lastPage;
     private int start;
     private int end;
     private int cntPage = 5;
     private String name;
 
-    public PagingVO(int total, int nowPage, int perPage){
-        this.nowPage=nowPage;
-        this.perPage=perPage;
-        this.total=total;
+    public PagingVO(){
+
+    }
+    public PagingVO total(int total){
+        this.total = total;
+        return this;
+    }
+    public PagingVO perPage(int perPage){
+        this.perPage = perPage;
+        return this;
+    }
+
+    public PagingVO nowPage(int nowPage){
+        this.nowPage = nowPage;
+        return this;
+    }
+    public void calcResult(){
         calcLastPage(getTotal(), getPerPage());
         calcStartEndPage(getNowPage(), cntPage);
         calcStartEnd(getNowPage(), getPerPage());
     }
+
+
+
+
     // 제일 마지막 페이지 계산
     public void calcLastPage(int total, int cntPerPage) {
         setLastPage((int) Math.ceil((double)total / (double)cntPerPage));

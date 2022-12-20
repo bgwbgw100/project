@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -68,5 +69,9 @@ public class MakeBoardServiceImpl implements MakeBoardService{
 
         //menuMapper.
         return dataMap;
+    }
+    @Override
+    public List<MenuDTO> menuBoardList()throws Exception{
+        return menuMapper.selectAllMenuBoard();
     }
 }
