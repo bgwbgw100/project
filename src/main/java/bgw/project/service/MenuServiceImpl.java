@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class MenuServiceImpl implements MenuService{
         if(menuCount>0){
             return "이미 있는 게시판 입니다.";
         }
-        int sortMax = menuMapper.selectMenuSortMax(boardName);
+        int sortMax = menuMapper.selectMenuSortMax("board");
         MenuDTO menuDTO = new MenuDTO();
         menuDTO.setName(boardName);
         menuDTO.setSort(sortMax+1);
@@ -55,21 +56,22 @@ public class MenuServiceImpl implements MenuService{
 
 
         ServletContext application = request.getServletContext();
-        application.setAttribute(Const.MENU_LIST,menuDTOS);
+        application.setAttribute(Const.BOARD_LIST,menuDTOS);
         return "성공";
     }
 
     @Override
-    public Map<String, Object> insertBoardCheck(String boardName, Map<String, Object> result) throws Exception {
+    public  Map<String, Object> insertBoardCheck(Map<String, Object> paramMap) throws Exception {
+        Map<String, Object> result = new HashMap<>();
 
+        int menuCount = menuMapper.selectMenuCountByName(paramMap.get("name").toString());
 
-        int menuCount = menuMapper.selectMenuCountByName(boardName);
 
         if(menuCount>0){
-            result.put("result","error");
+            result.put("error","중복 입니다.");
             return result;
         }
-        result.put("result","success");
+        result.put("success","성공!");
 
         return result;
     }

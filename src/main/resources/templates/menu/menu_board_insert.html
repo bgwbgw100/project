@@ -36,20 +36,25 @@
                             </button>
                         </div>
                     </div>
-                    <div class="card-body" style="display: block;">
-                        <form action="/menu/boardInsert" method="post">
+                    <div class="card-body" >
+
                         <div class="form-group">
-                            <label for="inputName">게시판 이름</label>
-                            <input type="text" id="inputName" class="form-control">
-                            <button  type="button" id="buttonCheck">Check</button>
+                        <form action="/menu/insertBoard" method="post" id="insertBoardForm">
+                            <label for="name">게시판 이름</label>
+                            <input type="text" id="name" class="form-control" name="name"  value="">
+                        </form>
+                            <button  type="button" id="buttonCheck">확인</button>
+                            <p id="error"></p>
+
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <a href="/index" class="btn btn-secondary">Cancel</a>
-                                <input type="submit" value="Create new Project" class="btn btn-success float-right">
+                                <button type="button"  class="btn btn-secondary" id="cancel" onclick="buttonCancelClick()" disabled>Cancel</button>
+                                <input type="button" value="Create new Project" onclick="insertBoardAction()" class="btn btn-success float-right" >
                             </div>
                         </div>
-                        </form>
+
+                        <p id="checkError"></p>
                     </div>
 
 
@@ -84,18 +89,35 @@
 </div>
 </section>
 <script>
+    let checkBoardName=false;
     window.onload = function(){
+
+
+    document.querySelector("#name").value;
+
     let boardCheckButton = document.querySelector("#buttonCheck");
     boardCheckButton.addEventListener("click",function(){
-
+                document.querySelector("#name").value=document.querySelector("#name").value.trim()
                 bgw.ajax({
                       url: "/menu/check",
                       method: "POST",
                       dataType: "json",
-                      data: {
+                      data: { name : document.querySelector("#name").value
                       },
-                      success: function() {
-                           alert("성공")
+                      success: function(data) {
+                        if(data.error){
+                            document.querySelector("#error").innerText=data.error;
+
+                        }
+                        if(data.success){
+                            checkBoardName=true;
+                            document.querySelector("#checkError").innerText="";
+                            document.querySelector("#name").readOnly=true;
+                            document.querySelector("#buttonCheck").disabled=true;
+                            document.querySelector("#cancel").disabled=false;
+
+                            document.querySelector("#error").innerText="";
+                        }
                       },
                       fail : function(){
                         alert("실패")
@@ -104,6 +126,25 @@
                 console.log(bgw.ajax)
         })
     }
+
+    function insertBoardAction(){
+        if(checkBoardName){
+            document.querySelector("#insertBoardForm").submit();
+        }else{
+            document.querySelector("#checkError").innerText="조건을 만족하지 못하셧습니다."
+        }
+    }
+
+   function buttonCancelClick(){
+        document.querySelector("#buttonCheck").disabled=false;
+        document.querySelector("#name").readOnly=false;
+        checkBoardName=false;
+
+        document.querySelector("#cancel").disabled=true;
+   }
+   function stringTrim(){
+
+   }
 
 </script>
 </body>

@@ -22,15 +22,22 @@ bgw = {
     xhr.addEventListener('readystatechange', function (event) {
 
         let  target = event.target;
-        console.log(XMLHttpRequest.DONE)
-        console.log(target)
+
         if (target.readyState == XMLHttpRequest.DONE) {
 
             let  status  = target.status;
             if (status === 0 || (status >= 200 && status < 400)) {
+                let data;
+                let responseContentType = target.getResponseHeader("content-Type")
 
+                if(responseContentType.includes("text/plain")){
+                    data = target.responseText;
+                }
+                else if(responseContentType.includes("application/json")){
+                    data = JSON.parse(target.responseText);
+                }
                     //성공시
-                obj.success();
+                obj.success(data);
             } else {
                    // 실패시
                 obj.fail()

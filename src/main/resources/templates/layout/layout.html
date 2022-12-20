@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html th:fragment="layout (title,content,javascript)" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <style>
+    #error{
+    color:red;
+    }
+
+  </style>
+
     <title th:replace="${title}">레이아웃</title>
 
         <!-- Theme style -->
@@ -8,7 +15,7 @@
         <!-- overlayScrollbars -->
         <link rel="stylesheet" href="/bootstrap/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
         <link rel="stylesheet" href="/bootstrap/plugins/summernote/summernote-bs4.min.css">
-        
+
 </head>
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">

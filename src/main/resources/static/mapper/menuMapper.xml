@@ -37,6 +37,7 @@
         from menu
         where use_ox='O'
         and name=#{name}
+        and parent_name='board'
     </select>
 
     <select id="selectMenuCountByNameParentName" parameterType="MenuDTO"   resultType="java.lang.Integer">
@@ -44,12 +45,12 @@
         from menu
         where use_ox='O'
         and name=#{name}
-        and parentName=#{parentName}
+        and parent_Name=#{parentName}
     </select>
 
 
     <insert id="insertMenu" parameterType="MenuDTO">
-        insert into menu(name,sort,level,parent_name) values(#{name},#{sort},#{level},#{parent_name})
+        insert into menu(name,sort,level,parent_name) values(#{name},#{sort},#{level},#{parentName})
     </insert>
 
     <select id="selectMenuSortMax" resultType="java.lang.Integer">
