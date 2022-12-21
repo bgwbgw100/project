@@ -34,7 +34,10 @@ public class BoardServiceImpl implements BoardService {
         int nowPage = Integer.parseInt(page);
         int perPage = 10;
 
-        PagingVO pagingVO =  new PagingVO(total, nowPage, perPage);
+        PagingVO pagingVO =  new PagingVO();
+        pagingVO.perPage(5).total(10).nowPage(nowPage);
+        pagingVO.calcResult();
+
         pagingVO.setName(boardName);
 
         List<BoardDTO> boardDTOS = boardMapper.selectAllBoardByPagingVO(pagingVO);

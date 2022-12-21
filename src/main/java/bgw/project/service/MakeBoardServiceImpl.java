@@ -5,6 +5,9 @@ import bgw.project.mapper.MenuMapper;
 import bgw.project.string.Const;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -56,8 +59,19 @@ public class MakeBoardServiceImpl implements MakeBoardService{
 
     @Override
     public Map<String, Object> makeBoardDelete(Map<String, Object> dataMap) throws Exception {
-        int id = Integer.valueOf(dataMap.get("id").toString());
+        MenuDTO menuDTO = menuMapper.selectMenuBoardHaveBoardCheck(dataMap);
+        Map<String,Object> resultMap = new HashMap<>();
+        if(menuDTO != null){
+
+            return resultMap;
+        }
+
+
         //menuMapper.
         return dataMap;
+    }
+    @Override
+    public List<MenuDTO> menuBoardList()throws Exception{
+        return menuMapper.selectAllMenuBoard();
     }
 }

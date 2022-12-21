@@ -13,6 +13,12 @@
           from menu
         where use_ox = 'O';
     </select>
+    <select id="selectAllMenuBoard" resultType="MenuDTO">
+        select name
+          from menu
+         where parent_name = 'board'
+    </select>
+
     <select id="selectSortByParentName" resultType="java.lang.Integer">>
         select sort
           from menu
@@ -58,6 +64,32 @@
           from menu
          where parent_name=#{parentName}
     </select>
+    <select id="selectMenuBoardHaveBoardCheck" resultType="MenuDTO" parameterType="java.util.Map">
+        SELECT *
+        FROM menu A
+        WHERE EXISTS (
+                    SELECT *
+                    FROM board B
+                    WHERE A.menu_id = B.menu_id
+                    and A.name = #{name}
+                    and parent_name = 'board'
+                    )
+
+    </select>
+    <delete id="deleteMenuByNameAndParentName" parameterType="java.util.Map">
+        delete from menu
+         where name = #{name}
+        <if test='parentName != null '>
+            and parent_name = #{parentName}
+        </if>
+    </delete>
+    <update id="updateUseOx" parameterType="java.util.Map">
+        update menu
+           set use_ox='X'
+         where menu_id=#{menuId}
+    </update>
+
+
 
 
 
