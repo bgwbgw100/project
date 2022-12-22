@@ -72,6 +72,19 @@ public class MakeBoardServiceImpl implements MakeBoardService{
     }
     @Override
     public List<MenuDTO> menuBoardList()throws Exception{
-        return menuMapper.selectAllMenuBoard();
+
+        List<MenuDTO> menuDTOS = menuMapper.selectAllMenuBoard();
+
+
+        for (MenuDTO menu: menuDTOS) {
+            Map<String,Object> map = new HashMap<>();
+            map.put("name",menu.getName());
+            MenuDTO menuDTO = menuMapper.selectMenuBoardHaveBoardCheck(map);
+            String haveOx ;
+            if(menuDTO != null) haveOx = "O";
+            else haveOx = "X";
+            menu.setBoardHaveOx(haveOx);
+        }
+        return menuDTOS;
     }
 }

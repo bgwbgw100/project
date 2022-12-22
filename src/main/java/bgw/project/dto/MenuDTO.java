@@ -16,5 +16,6 @@ public class MenuDTO {
     private Date creationDate;
     private String useOx;
     private Date dltnDate;
+    private String boardHaveOx;
 }
 

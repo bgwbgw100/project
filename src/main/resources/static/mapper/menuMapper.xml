@@ -14,7 +14,7 @@
         where use_ox = 'O';
     </select>
     <select id="selectAllMenuBoard" resultType="MenuDTO">
-        select name
+        select *
           from menu
          where parent_name = 'board'
     </select>

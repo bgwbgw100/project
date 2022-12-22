@@ -29,7 +29,7 @@
             <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">General</h3>
+                        <h3 class="card-title">게시판 생성</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                 <i class="fas fa-minus"></i>
@@ -74,26 +74,21 @@
                     <div class="card-body">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Condensed Full Width Table</h3>
+                                <h3 class="card-title">게시판 메뉴 관리</h3>
                             </div>
 
                             <div class="card-body p-0">
                                 <table class="table table-sm">
                                     <thead>
                                     <tr>
-                                        <th >#</th>
+
                                         <th>name</th>
                                         <th>contentOX</th>
-                                        <th>deleteOX</th>
+                                        <th>usesOX</th>
+                                        <th>delete</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>Update software</td>
-                                        <td><span class="badge bg-danger">O</span></td>
-                                        <td><span class="badge bg-danger">O</span></td>
-                                    </tr>
+                                    <tbody id="tbody">
 
                                     </tbody>
                                 </table>
@@ -151,6 +146,7 @@
         })
 
         getBoardMenu();
+
     }
 
     function insertBoardAction(){
@@ -168,9 +164,6 @@
 
         document.querySelector("#cancel").disabled=true;
    }
-   function stringTrim(){
-
-   }
 
 
 function getBoardMenu(){
@@ -180,6 +173,9 @@ function getBoardMenu(){
         dataType:'json',
         success :function(data){
             console.log(data);
+
+
+            bootstrapTableGrid(data);
         },
         fail : function(){
             alert("게시판 메뉴를 불러오는데 실패하셧습니다.")
@@ -187,6 +183,50 @@ function getBoardMenu(){
     })
 
 }
+
+ function bootstrapTableGrid(data){
+
+        for(let i of data){
+            let tr =bgw.mTag('tr');
+            tdInnerText(i.name,tr);
+            tdInnerText(i.boardHaveOx,tr,{class : 'text-center'});
+            tdInnerText(i.useOx,tr,{class : 'text-center'});
+            let deleteTd =tdInnerText('',tr,{class : 'text-center',
+                                                 'data-menuId' : 'i.menuId' })
+            let deleteSpan = bgw.mTag('span',{class : "float-right badge bg-danger",
+                                                style:"cursor:pointer"})
+            deleteSpan.addEventListener('click',deleteBoard());
+            deleteSpan.innerText="delete";
+            deleteTd.append(deleteSpan)
+            document.querySelector("#tbody").append(tr);
+
+
+        }
+    }
+ function tdInnerText(data,tr,attr){
+        let td = bgw.mTag('td',attr);
+        td.innerText=""+data;
+        tr.append(td);
+        return td;
+ }
+
+ function deleteBoard(){
+     bgw.ajax({
+        url:'/makeBoard/ ',
+        method: 'post',
+        dataType:'json',
+        data : ,
+
+        success :function(data){
+            console.log(data);
+
+        },
+        fail : function(){
+            alert("게시판 삭제에 실패했습니다..")
+        }
+    })
+ }
+
 </script>
 </body>
 </html>
