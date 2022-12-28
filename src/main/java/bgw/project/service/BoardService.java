@@ -18,4 +18,6 @@ public interface BoardService {
     Map<String,Object> boardDetailImg(int seq) throws Exception;
 
     BoardDTO boardUpdate(BoardUpdateForm boardUpdatesForm, HttpServletRequest request, String boardName) throws Exception;
+
+    void boardDelete(int seq) throws Exception;
 }

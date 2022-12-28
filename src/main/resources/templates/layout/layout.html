@@ -63,7 +63,7 @@
                 <ul class="nav nav-treeview">
                   <th:blcok th:each="menu : ${application.boardList}">
                   <li class="nav-item">
-                    <a th:href="@{/board/{name}(name=${menu.name})}" class="nav-link">
+                    <a th:href="@{/board/{name}/1(name=${menu.name})}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p th:text="${menu.name}"></p>
                     </a>

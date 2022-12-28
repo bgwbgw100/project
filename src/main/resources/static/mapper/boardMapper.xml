@@ -60,6 +60,10 @@
             use_ox = 'X'
           where seq = #{seq}
     </delete>
+    <delete id="deleteBoardBySeq" parameterType="java.lang.Integer">
+        delete from board
+         where seq=#{seq}
+    </delete>
 
 
 

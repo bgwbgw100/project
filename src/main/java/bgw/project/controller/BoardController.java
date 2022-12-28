@@ -37,8 +37,8 @@ public class BoardController {
         return "board/board_insert";
     }
 
-    @GetMapping("board/{boardName}")
-    public String list(Model model, @PathVariable("boardName") String boardName,String page){
+    @GetMapping("board/{boardName}/{page}")
+    public String list(Model model, @PathVariable("boardName") String boardName,@PathVariable(value = "page",required = false)String page){
         if(page == null){
             page = "1";
         }
@@ -50,7 +50,7 @@ public class BoardController {
         return "board/board";
     }
 
-    @GetMapping("board/{boardName}/{seq}")
+    @GetMapping("board/{boardName}/detail/{seq}")
     public String detail(@PathVariable("boardName") String boardName, @PathVariable("seq") int seq,Model model,String page){
         BoardDTO boardDTO = boardService.boardDetail(seq);
         model.addAttribute("board" ,boardDTO);
@@ -61,11 +61,15 @@ public class BoardController {
     public String update(@PathVariable("boardName") String boardName, @PathVariable("seq") int seq,Model model,String page) throws Exception{
         Map<String,Object> resultMap = boardService.boardDetailImg(seq);
         BoardDTO boardDTO = (BoardDTO) resultMap.get("boardDTO");
-        Object resultSeq = resultMap.get("seq");
-        model.addAttribute("board" ,boardDTO);
-        model.addAttribute("seq" ,resultSeq);
+        if(resultMap.get("nos")!= null){
+            List<String> nos =  (List<String>) resultMap.get("nos");
+            model.addAttribute("no" ,nos);
+        }
 
-        return "board/board_detail";
+        model.addAttribute("board" ,boardDTO);
+
+
+        return "board/board_update";
     }
 
     @PostMapping("board/{boardName}/insert")
@@ -79,12 +83,13 @@ public class BoardController {
     public String update(@PathVariable("boardName")String boardName , BoardUpdateForm boardUpdateForm, HttpServletRequest request, Model model) throws Exception{
 
         boardService.boardUpdate(boardUpdateForm,request,boardName);
-        return null;
+        return "redirect:/board/"+boardName+"/detail/"+boardUpdateForm.getSeq();
     }
 
-    @PostMapping("board/{boardName}/delete")
-    public String delete(){
-        return null;
+    @PostMapping("board/{boardName}/delete/{seq}")
+    public String delete(@PathVariable("boardName")String boardName, @PathVariable("seq") int seq,String page) throws Exception {
+        boardService.boardDelete(seq);
+        return  "redirect:/board/"+boardName;
     }
 
 }

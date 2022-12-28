@@ -93,8 +93,14 @@ public class BoardServiceImpl implements BoardService {
         BoardDTO boardDTO= boardMapper.selectBoardDetailBySeq(seq);
         Map<String , Object> dataMap= new HashMap<>();
         dataMap.put("seq",seq);
-        Map<String, Object> resultMap = attachFileMapper.fileSelectNoByBoardSeq(dataMap);
+        Map<String, Object> resultMap = new HashMap<>();
+        List<String> nos= attachFileMapper.fileSelectNoByBoardSeq(dataMap);
+        if(nos !=null){
+            resultMap.put("nos",nos);
+        }
         resultMap.put("boardDTO",boardDTO);
+
+
         return resultMap;
     }
     @Override
@@ -127,6 +133,11 @@ public class BoardServiceImpl implements BoardService {
         return boardDTO;
     }
 
+    @Override
+    public void boardDelete(int seq) throws Exception{
+        int boardCnt = boardMapper.deleteBoardBySeq(seq);
+        int fileCnt = attachFileMapper.boardFileDeleteByBoardSeq(seq);
+    }
 
 
 

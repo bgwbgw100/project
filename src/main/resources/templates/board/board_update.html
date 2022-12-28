@@ -19,9 +19,9 @@
             <div class="container-fluid">
                 <form th:action="@{/board/{boardName}/update(boardName=${boardName})}" method="post" id ="updateForm">
                     <input type="hidden" name="seq" th:value="${seq}">
-                    <th:blcok th:each="attach : ${attachFileDTOs}" >
-                        <input type="hidden" class="no" th:value="${attach.no}">
-                    </th:blcok>
+                    <th:block th:each="attach : ${no}" >
+                        <input type="hidden" class="no" th:value="${attach}">
+                    </th:block>
                     <input type="hidden" name="name" th:value="${boardName}">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="form-group">
-                     <textarea id="compose-textarea" class="form-control" name="content" style="height: 300px">
+                     <textarea id="compose-textarea" class="form-control" name="content" style="height: 300px" th:utext="${board.content}">
 
                     </textarea>
                         </div>
@@ -158,6 +158,7 @@
                     processData : false,
                     success : function(data) {
                        console.log(data)
+                    }
                 })
             }
         }
