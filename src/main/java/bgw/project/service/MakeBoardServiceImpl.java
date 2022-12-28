@@ -60,14 +60,19 @@ public class MakeBoardServiceImpl implements MakeBoardService{
     @Override
     public Map<String, Object> makeBoardDelete(Map<String, Object> dataMap) throws Exception {
         MenuDTO menuDTO = menuMapper.selectMenuBoardHaveBoardCheck(dataMap);
-        Map<String,Object> resultMap = new HashMap<>();
+        String[] str;
+        dataMap.put("parentName","board");
+        int result;
         if(menuDTO != null){
-
-            return resultMap;
+            result = menuMapper.updateUseOxDelete();
+            str = (result == 0) ? new String[]{"fail", "삭제에 실패했습니다."} : new String[]{"success", "삭제 성공."};
+            dataMap.put(str[0],str[1]);
+            return dataMap;
         }
 
-
-        //menuMapper.
+        result = menuMapper.deleteMenuByNameAndParentName(dataMap);
+        str = (result == 0) ? new String[]{"fail", "삭제에 실패했습니다."} : new String[]{"success", "삭제 성공."};
+        dataMap.put(str[0],str[1]);
         return dataMap;
     }
     @Override

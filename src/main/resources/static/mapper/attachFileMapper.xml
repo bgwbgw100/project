@@ -42,8 +42,13 @@
         update attached_file
            set use_ox = 'X'
         where no=#{no}
-
     </update>
+
+    <select id="fileSelectNoByBoardSeq" parameterType="java.util.Map" resultType="java.util.Map">
+        select no
+         where work_pk=#{seq}
+           and type_work='board'
+    </select>
 
 
 

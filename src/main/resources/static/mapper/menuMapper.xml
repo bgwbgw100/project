@@ -83,7 +83,7 @@
             and parent_name = #{parentName}
         </if>
     </delete>
-    <update id="updateUseOx" parameterType="java.util.Map">
+    <update id="updateUseOxDelete" parameterType="java.util.Map">
         update menu
            set use_ox='X'
          where menu_id=#{menuId}

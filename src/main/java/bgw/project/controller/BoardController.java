@@ -2,6 +2,7 @@ package bgw.project.controller;
 
 import bgw.project.dto.BoardDTO;
 import bgw.project.form.BoardInsertForm;
+import bgw.project.form.BoardUpdateForm;
 import bgw.project.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -55,15 +57,28 @@ public class BoardController {
 
         return "board/board_detail";
     }
+    @GetMapping("board/{boardName}/update/{seq}")
+    public String update(@PathVariable("boardName") String boardName, @PathVariable("seq") int seq,Model model,String page) throws Exception{
+        Map<String,Object> resultMap = boardService.boardDetailImg(seq);
+        BoardDTO boardDTO = (BoardDTO) resultMap.get("boardDTO");
+        Object resultSeq = resultMap.get("seq");
+        model.addAttribute("board" ,boardDTO);
+        model.addAttribute("seq" ,resultSeq);
+
+        return "board/board_detail";
+    }
+
     @PostMapping("board/{boardName}/insert")
-    public String insert(@PathVariable("boardName")String boardName , BoardInsertForm boardInsertForm, HttpServletRequest request, Model model) throws Exception {
+    public String insert(@PathVariable("boardName")String boardName ,BoardInsertForm boardInsertForm, HttpServletRequest request, Model model) throws Exception {
 
         boardService.boardInsert(boardInsertForm,request,boardName);
         return "redirect:/board/"+ boardInsertForm.getName();
     }
 
     @PostMapping("board/{boardName}/update")
-    public String update(){
+    public String update(@PathVariable("boardName")String boardName , BoardUpdateForm boardUpdateForm, HttpServletRequest request, Model model) throws Exception{
+
+        boardService.boardUpdate(boardUpdateForm,request,boardName);
         return null;
     }
 

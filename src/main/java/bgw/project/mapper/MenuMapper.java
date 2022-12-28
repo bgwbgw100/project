@@ -26,4 +26,6 @@ public interface MenuMapper {
     public MenuDTO selectMenuBoardHaveBoardCheck(Map<String,Object> dataMap) throws  Exception;
     public int deleteMenuByNameAndParentName(Map<String,Object> dataMap) throws Exception;
     public List<MenuDTO> selectAllMenuBoard() throws Exception;
+
+    public int updateUseOxDelete() throws Exception;
 }

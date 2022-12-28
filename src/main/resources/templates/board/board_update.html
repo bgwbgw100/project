@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layout :: layout(~{::title},~{::section},~{::script})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>게시글 수정</title>
+</head>
+<body>
+<section>
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>게시글 수정</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="container-fluid">
+                <form th:action="@{/board/{boardName}/update(boardName=${boardName})}" method="post" id ="updateForm">
+                    <input type="hidden" name="seq" th:value="${seq}">
+                    <th:blcok th:each="attach : ${attachFileDTOs}" >
+                        <input type="hidden" class="no" th:value="${attach.no}">
+                    </th:blcok>
+                    <input type="hidden" name="name" th:value="${boardName}">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title" th:text="${boardName}"></h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input class="form-control" name="title"  placeholder="제목:">
+                        </div>
+                        <div class="form-group">
+                            <label>글 종류</label>
+                            <select class="form-control" name="kind">
+                                <option>option 1</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>공지</label>
+                            <select class="form-control" name="noticeStatus">
+                                <option>O</option>
+                                <option>X</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                     <textarea id="compose-textarea" class="form-control" name="content" style="height: 300px">
+
+                    </textarea>
+                        </div>
+                      <!--  <div class="form-group">
+                            <div class="btn btn-default btn-file">
+                                <i class="fas fa-paperclip"></i> Attachment
+                                <input type="file">
+                    </div>
+                    <p class="help-block">이미지만 넣으세요(jpg,png)  (최대용량 : 3MB)</p>
+                </div>-->
+            </div>
+            <div class="card-footer">
+                <div class="float-right">
+                    <button type="button" class="btn btn-primary" onclick="boardUpdateSubmit()"><i class="far fa-envelope"></i>작성</button>
+                </div>
+                <button type="reset" class="btn btn-default"><i class="fas fa-times"></i>취소</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+<script>
+  $(function () {
+    $('#compose-textarea').summernote({
+        height: 300,
+        minHeight: null,
+        maxHeight: null,
+        focus: true,
+        lang: "ko-KR",
+        placeholder: '최대 2048자까지 쓸 수 있습니다',
+        callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+					onImageUpload : function(files) {
+						uploadSummernoteImageFile(files[0],this);
+					},
+					onPaste: function (e) {
+						var clipboardData = e.originalEvent.clipboardData;
+						if (clipboardData && clipboardData.items && clipboardData.items.length) {
+							var item = clipboardData.items[0];
+							if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+								e.preventDefault();
+							}
+						}
+					}
+				}
+    })
+  })
+
+  /**
+	* 이미지 파일 업로드
+	*/
+	function uploadSummernoteImageFile(file, editor) {
+		data = new FormData();
+		data.append("file", file);
+		$.ajax({
+			data : data,
+			type : "POST",
+			url : "/board/upload",
+			contentType : false,
+			processData : false,
+			success : function(data) {
+			    console.log(data)
+				$(editor).summernote('insertImage', "/"+data.url);
+
+			}
+		});
+	}
+
+    function boardUpdateSubmit(){
+        let imgTags = document.querySelectorAll("img")
+        let nos = new Array();
+        let pastNos = new Array();
+        let pastImgNos = document.querySelectorAll('.no');
+        if(pastImgNos){
+            for(let i of pastImgNos){
+                pastNo.push(i.value);
+            }
+        }
+        console.log(pastNos);
+
+
+        console.log(imgTags);
+        console.log(imgTags.forEach(function(img){
+            console.log(img);
+            let strArray= img.src.split('/');
+            let length=strArray.length;
+            let inputValue = strArray[length-1]
+            let input = document.createElement("input");
+            console.log(inputValue);
+            input.name="no";
+            input.type="hidden";
+            input.setAttribute("value",inputValue);
+            nos.put(inputValue);
+            document.querySelector("#insertForm").append(input);
+            })
+        )
+
+        for(let i of pastNos){
+            let flag = nos.find((e) => e == i);
+            if(flag){}
+            else{
+                $.ajax({
+                    data : {no : i},
+                    type : "POST",
+                    url : "/board/imgDelete",
+                    contentType : false,
+                    processData : false,
+                    success : function(data) {
+                       console.log(data)
+                })
+            }
+        }
+        document.querySelector("#updateForm").submit();
+    }
+
+
+
+</script>
+
+</body>
+</html>

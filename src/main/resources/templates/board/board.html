@@ -74,6 +74,9 @@
                 </div>
                 <!-- /.card-body -->
               </div>
+              <div class="float-right">
+                <button th:onclick="|location.href='@{/board/{boardName}/insert(boardName=${boardName})}'|"  type="button" class="btn btn-primary" ><i class="far fa-envelope"></i>작성</button>
+              </div>
               <!-- /.card -->
             </div>
           </div>

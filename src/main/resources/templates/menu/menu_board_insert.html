@@ -194,10 +194,13 @@ function getBoardMenu(){
             let deleteTd =tdInnerText('',tr,{class : 'text-center',
                                                  'data-menuId' : 'i.menuId' })
             let deleteSpan = bgw.mTag('span',{class : "float-right badge bg-danger",
-                                                style:"cursor:pointer"})
-            deleteSpan.addEventListener('click',deleteBoard());
+                                              style : "cursor:pointer",
+                                              'data-name' :i.name,
+                                              'data-id' :i.menuId
+                                              })
+            deleteSpan.addEventListener('click',deleteBoard);
             deleteSpan.innerText="delete";
-            deleteTd.append(deleteSpan)
+            deleteTd.append(deleteSpan);
             document.querySelector("#tbody").append(tr);
 
 
@@ -211,14 +214,26 @@ function getBoardMenu(){
  }
 
  function deleteBoard(){
+     let target = event.target;
+     let boardName= target.dataset.name;
+     let menuId= target.dataset.id;
      bgw.ajax({
-        url:'/makeBoard/ ',
+        url:'/makeBoard/delete',
         method: 'post',
         dataType:'json',
-        data : ,
+        data : {'name' : boardName,
+                'menuId': menuId},
 
         success :function(data){
-            console.log(data);
+            if(data.success){
+
+                window.location.reload()
+
+            }
+            else if(data.fail){
+                alert(data.fail)
+            }
+
 
         },
         fail : function(){

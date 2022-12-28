@@ -1,10 +1,13 @@
 package bgw.project.dto;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BoardDTO {
     private int seq;
     private int order;
@@ -21,5 +24,7 @@ public class BoardDTO {
     private Date dltnDate;
     private String useOx;
     private String ip;
+
+
 
 }

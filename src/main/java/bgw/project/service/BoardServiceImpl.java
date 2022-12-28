@@ -5,6 +5,7 @@ import bgw.project.dto.AccountDTO;
 import bgw.project.dto.AttachFileDTO;
 import bgw.project.dto.BoardDTO;
 import bgw.project.form.BoardInsertForm;
+import bgw.project.form.BoardUpdateForm;
 import bgw.project.mapper.AttachFileMapper;
 import bgw.project.mapper.BoardMapper;
 import bgw.project.mapper.MenuMapper;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +50,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardDTO boardDetail(int seq) {
-        BoardDTO  boardDTO= boardMapper.selectBoardDetailBySeq(seq);
+        BoardDTO boardDTO= boardMapper.selectBoardDetailBySeq(seq);
         return boardDTO;
     }
 
@@ -77,7 +80,7 @@ public class BoardServiceImpl implements BoardService {
             List<String> imgNos = boardInsertForm.getNo();
             for (String imgNo : imgNos) {
                 attachFileDTO.setWorkPk(String.valueOf(boardDTO.getSeq()));
-                attachFileDTO.setTypeWork(boardInsertForm.getName());
+                attachFileDTO.setTypeWork("board");
                 attachFileDTO.setNo(Integer.parseInt(imgNo));
                 attachFileMapper.fileWorkTypeUpdate(attachFileDTO);
             }
@@ -85,4 +88,46 @@ public class BoardServiceImpl implements BoardService {
         return boardDTO;
 
     }
+    @Override
+    public Map<String,Object> boardDetailImg(int seq) throws Exception{
+        BoardDTO boardDTO= boardMapper.selectBoardDetailBySeq(seq);
+        Map<String , Object> dataMap= new HashMap<>();
+        dataMap.put("seq",seq);
+        Map<String, Object> resultMap = attachFileMapper.fileSelectNoByBoardSeq(dataMap);
+        resultMap.put("boardDTO",boardDTO);
+        return resultMap;
+    }
+    @Override
+    public BoardDTO boardUpdate(BoardUpdateForm boardUpdatesForm, HttpServletRequest request, String boardName) throws Exception {
+        BoardDTO.BoardDTOBuilder boardDTOBuilder = BoardDTO.builder();
+        AttachFileDTO attachFileDTO = new AttachFileDTO();
+
+
+        int menuId = menuMapper.selectMenuIdByName(boardName);
+        boardDTOBuilder
+                .content(boardUpdatesForm.getContent())
+                .title(boardUpdatesForm.getTitle())
+                .kind(boardUpdatesForm.getKind())
+                .ip(request.getRemoteAddr())
+                .seq(boardUpdatesForm.getSeq());
+        BoardDTO boardDTO = boardDTOBuilder.build();
+        boardMapper.updateBoard(boardDTO);
+
+
+        // 이미지 파일이 있을때
+        if(boardUpdatesForm.getNo()!= null && boardUpdatesForm.getNo().size()!=0 ){
+            List<String> imgNos = boardUpdatesForm.getNo();
+            for (String imgNo : imgNos) {
+                attachFileDTO.setWorkPk(String.valueOf(boardUpdatesForm.getSeq()));
+                attachFileDTO.setTypeWork("board");
+                attachFileDTO.setNo(Integer.parseInt(imgNo));
+                attachFileMapper.fileWorkTypeUpdate(attachFileDTO);
+            }
+        }
+        return boardDTO;
+    }
+
+
+
+
 }
