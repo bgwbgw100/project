@@ -17,9 +17,9 @@
         where no = #{no}
           and use_ox = 'O'
     </select>
-    <delete id="residueDelete">
+    <delete id="residueDelete" parameterType="Integer">
         delete from attached_file
-          where no=#{no}
+          where work_pk=#{seq}
     </delete>
     <update id="fileUpdate" parameterType="AttachFileDTO">
         update attached_file
@@ -55,6 +55,12 @@
         delete from attached_file
          where work_pk=#{seq}
            and work_type='board'
+    </delete>
+
+    <delete id="boardUpdateImgDelete">
+        delete from attached_file
+        where no=#{no}
+
     </delete>
 
 

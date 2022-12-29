@@ -19,5 +19,6 @@ public interface BoardService {
 
     BoardDTO boardUpdate(BoardUpdateForm boardUpdatesForm, HttpServletRequest request, String boardName) throws Exception;
 
-    void boardDelete(int seq) throws Exception;
+
+    Map<String, Object> boardDelete(int seq, HttpServletRequest request) throws Exception;
 }

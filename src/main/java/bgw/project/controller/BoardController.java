@@ -76,7 +76,7 @@ public class BoardController {
     public String insert(@PathVariable("boardName")String boardName ,BoardInsertForm boardInsertForm, HttpServletRequest request, Model model) throws Exception {
 
         boardService.boardInsert(boardInsertForm,request,boardName);
-        return "redirect:/board/"+ boardInsertForm.getName();
+        return "redirect:/board/"+ boardInsertForm.getName()+"/"+1;
     }
 
     @PostMapping("board/{boardName}/update")
@@ -86,10 +86,15 @@ public class BoardController {
         return "redirect:/board/"+boardName+"/detail/"+boardUpdateForm.getSeq();
     }
 
-    @PostMapping("board/{boardName}/delete/{seq}")
-    public String delete(@PathVariable("boardName")String boardName, @PathVariable("seq") int seq,String page) throws Exception {
-        boardService.boardDelete(seq);
-        return  "redirect:/board/"+boardName;
+    @GetMapping("board/{boardName}/delete/{seq}")
+    public String delete(@PathVariable("boardName")String boardName, @PathVariable("seq") int seq,String page,HttpServletRequest request) throws Exception {
+        Map<String, Object> resultMap = boardService.boardDelete(seq, request);
+        Object error = resultMap.get("error");
+        if(error!=null){
+            return "redirect:/board/"+boardName+"/detail/"+seq+"?error="+error;
+        }
+
+        return  "redirect:/board/"+boardName+"/"+1;
     }
 
 }

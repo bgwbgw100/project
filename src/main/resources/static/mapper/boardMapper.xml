@@ -65,6 +65,12 @@
          where seq=#{seq}
     </delete>
 
+    <select  id="selectBoardWriter"  resultType="java.lang.String" parameterType="java.lang.Integer">
+        select writer
+         from board
+        where seq=#{seq}
+
+    </select>
 
 
 

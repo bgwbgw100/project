@@ -67,7 +67,7 @@
                         <td><a th:href="@{/board/{boardName}/detail/{seq}(boardName=${boardName},seq=${board.seq})}" th:text="${board.title}"></a></td>
                         <td th:text="${board.writer}"></td>
                         <td th:text="${board.views}"></td>
-                        <td th:text="${board.rgstrDate}"></td>
+                        <td th:text=" ${#dates.format(board.rgstrDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                       </tr>
                     </tbody>
                   </table>

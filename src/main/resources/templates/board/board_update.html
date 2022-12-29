@@ -119,15 +119,6 @@
 
     function boardUpdateSubmit(){
         let imgTags = document.querySelectorAll("img")
-        let nos = new Array();
-        let pastNos = new Array();
-        let pastImgNos = document.querySelectorAll('.no');
-        if(pastImgNos){
-            for(let i of pastImgNos){
-                pastNo.push(i.value);
-            }
-        }
-        console.log(pastNos);
 
 
         console.log(imgTags);
@@ -141,27 +132,11 @@
             input.name="no";
             input.type="hidden";
             input.setAttribute("value",inputValue);
-            nos.put(inputValue);
-            document.querySelector("#insertForm").append(input);
+            document.querySelector("#updateForm").append(input);
             })
         )
 
-        for(let i of pastNos){
-            let flag = nos.find((e) => e == i);
-            if(flag){}
-            else{
-                $.ajax({
-                    data : {no : i},
-                    type : "POST",
-                    url : "/board/imgDelete",
-                    contentType : false,
-                    processData : false,
-                    success : function(data) {
-                       console.log(data)
-                    }
-                })
-            }
-        }
+
         document.querySelector("#updateForm").submit();
     }
 

@@ -68,7 +68,7 @@ public class BoardServiceImpl implements BoardService {
         boardDTO.setMenuId(menuId);
         boardDTO.setContent(boardInsertForm.getContent());
         boardDTO.setTitle(boardInsertForm.getTitle());
-        boardDTO.setWriter(accountDTO.getName());
+        boardDTO.setWriter(accountDTO.getId());
         boardDTO.setKind(boardInsertForm.getKind());
         boardDTO.setNoticeStatus(boardInsertForm.getNoticeStatus());
         boardDTO.setIp(request.getRemoteAddr());
@@ -107,6 +107,22 @@ public class BoardServiceImpl implements BoardService {
     public BoardDTO boardUpdate(BoardUpdateForm boardUpdatesForm, HttpServletRequest request, String boardName) throws Exception {
         BoardDTO.BoardDTOBuilder boardDTOBuilder = BoardDTO.builder();
         AttachFileDTO attachFileDTO = new AttachFileDTO();
+        
+        // 수정시 삭제된 이미지 db 삭제
+        if(boardUpdatesForm.getNo()!=null){
+            Map<String,Object> dataMap = new HashMap<>();
+            dataMap.put("seq",boardUpdatesForm.getSeq());
+            List<String> nos = attachFileMapper.fileSelectNoByBoardSeq(dataMap);
+            if(nos != null){
+                for (String no : nos) {
+                    long count = boardUpdatesForm.getNo().stream().filter(str -> no.equals(str)).count();
+                    if(count<=0){
+                        attachFileMapper.boardUpdateImgDelete(no);
+                    }
+                }
+            }
+        }
+
 
 
         int menuId = menuMapper.selectMenuIdByName(boardName);
@@ -134,10 +150,26 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void boardDelete(int seq) throws Exception{
+    public Map<String, Object> boardDelete(int seq, HttpServletRequest request) throws Exception{
+        Map<String,Object> resultMap = new HashMap<>();
+
+        HttpSession session = request.getSession(false);
+        AccountDTO sessionAccount = (AccountDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        String sessionId = sessionAccount.getId();
+        String writer = boardMapper.selectBoardWriter(seq);
+
+        if(!sessionId.equals(writer)){
+            resultMap.put("error","삭제실패");
+            return resultMap;
+        }
+        
         int boardCnt = boardMapper.deleteBoardBySeq(seq);
-        int fileCnt = attachFileMapper.boardFileDeleteByBoardSeq(seq);
+        int fileCnt = attachFileMapper.residueDelete(seq);
+
+        resultMap.put("success","삭제성공");
+        return resultMap;
     }
+
 
 
 

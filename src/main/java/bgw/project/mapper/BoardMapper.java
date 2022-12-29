@@ -15,10 +15,11 @@ public interface BoardMapper {
     public BoardDTO selectBoardDetailBySeq(@Param("seq") int seq);
     public int insertBoard(BoardDTO boardDTO);
     public int updateBoard(BoardDTO boardDTO);
-    public int deleteBoard(int seq);
+    public int deleteBoard(@Param("seq")int seq);
     public int fileWorkTypeUpdate(@Param("no") String no);
 
     public int deleteBoardBySeq(int seq);
 
+    public String selectBoardWriter(int seq);
 
 }
